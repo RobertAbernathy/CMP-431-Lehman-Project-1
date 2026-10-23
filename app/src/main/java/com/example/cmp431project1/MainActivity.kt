@@ -40,56 +40,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 var work=25
-@Composable
-fun TopMenu(modifier: Modifier = Modifier) {
-    Column(modifier= modifier,
-        verticalArrangement = Arrangement.SpaceEvenly,
-        horizontalAlignment = Alignment.CenterHorizontally)
-    {
-        //Counters
-        Row(modifier= Modifier.weight(1f).padding(4.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically)
-        {
-            Column(modifier= Modifier.weight(1f),
-                verticalArrangement=Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Total Workouts\nCompleted:", textAlign = TextAlign.Center, modifier= Modifier.weight(1f))
-                Text(work.toString(), modifier= Modifier.weight(1f))
-            }
-            Column(modifier= Modifier.weight(1f),
-                verticalArrangement=Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Total Cumulative\nWorkout Time:", textAlign = TextAlign.Center, modifier= Modifier.weight(1f))
-                Text("TODO", modifier= Modifier.weight(1f))
-            }
-        }
 
-        //Picker
-        Row(modifier= Modifier.weight(1f).padding(4.dp),
-            horizontalArrangement = Arrangement.SpaceAround)
-        {
-            Column(modifier= Modifier.weight(1f),
-                verticalArrangement=Arrangement.SpaceAround,
-                horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Strength", modifier= Modifier.weight(1f))
-                Text("Cardio", modifier= Modifier.weight(1f))
-            }
-            Column(modifier= Modifier.weight(1f),
-                verticalArrangement=Arrangement.SpaceAround,
-                horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Flexibility", modifier= Modifier.weight(1f))
-                Text("HIIT", modifier= Modifier.weight(1f))
-            }
-        }
-
-        //History log
-        Text("space 3", textAlign = TextAlign.Center, modifier= Modifier.weight(1f))
-
-        //Clear log
-        Text("space 4", textAlign = TextAlign.Center, modifier= Modifier.weight(1f))
-    }
-}
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
@@ -99,13 +50,54 @@ fun AppNavigation() {
     ) {
         composable(route = "home") {
 
-            Scaffold( modifier = Modifier.fillMaxSize() ) {
+            Column(modifier= Modifier.background(Color.Cyan).padding(16.dp).fillMaxSize(),
+                verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally)
+            {
+                //Counters
+                Row(modifier= Modifier.weight(1f).padding(4.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically)
+                {
+                    Column(modifier= Modifier.weight(1f),
+                        verticalArrangement=Arrangement.SpaceBetween,
+                        horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("Total Workouts\nCompleted:", textAlign = TextAlign.Center
+                            , modifier= Modifier.weight(1f))
+                        Text(work.toString(), modifier= Modifier.weight(1f))
+                    }
+                    Column(modifier= Modifier.weight(1f),
+                        verticalArrangement=Arrangement.SpaceEvenly,
+                        horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("Total Cumulative\nWorkout Time:", textAlign = TextAlign.Center
+                            , modifier= Modifier.weight(1f))
+                        Text("TODO", modifier= Modifier.weight(1f))
+                    }
+                }
 
-                innerPadding -> TopMenu(
-                    modifier = Modifier.background(Color.Cyan)
-                        .padding(innerPadding).fillMaxSize()
-                )
+                //Picker
+                Row(modifier= Modifier.weight(1f).padding(4.dp),
+                    horizontalArrangement = Arrangement.SpaceAround)
+                {
+                    Column(modifier= Modifier.weight(1f),
+                        verticalArrangement=Arrangement.SpaceAround,
+                        horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("Strength", modifier= Modifier.weight(1f))
+                        Text("Cardio", modifier= Modifier.weight(1f))
+                    }
+                    Column(modifier= Modifier.weight(1f),
+                        verticalArrangement=Arrangement.SpaceAround,
+                        horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text("Flexibility", modifier= Modifier.weight(1f))
+                        Text("HIIT", modifier= Modifier.weight(1f))
+                    }
+                }
 
+                //History log
+                Text("space 3", textAlign = TextAlign.Center, modifier= Modifier.weight(1f))
+
+                //Clear log
+                Text("space 4", textAlign = TextAlign.Center, modifier= Modifier.weight(1f))
             }
 
         }
@@ -117,6 +109,6 @@ fun AppNavigation() {
 @Composable
 fun GreetingPreview() {
     CMP431Project1Theme {
-        TopMenu(modifier = Modifier.fillMaxSize())
+
     }
 }
