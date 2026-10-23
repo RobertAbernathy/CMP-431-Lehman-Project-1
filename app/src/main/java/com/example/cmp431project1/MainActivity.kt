@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
 class exercise(val name:String, val descrpt: String, val difficulty: String, val c: Color)
 class workout(val name:String, val mins:Int)
 class workoutHold{
-    var sum=0;
+    var sum=0
     var L = mutableListOf<workout>()
     fun add(w: workout){
         sum+=w.mins
@@ -65,7 +65,6 @@ class workoutHold{
         L=mutableListOf<workout>()
     }
 }
-var work=25
 var curExercise = exercise("dummy", "this shouldn't be seen",
     "dummy", Color.Black)
 var curCat = emptyList<exercise>()
@@ -161,10 +160,28 @@ fun AppNavigation() {
                 }
 
                 //History log
-                Text("space 3", textAlign = TextAlign.Center, modifier= Modifier.weight(1f))
+                //Text("space 3", textAlign = TextAlign.Center, modifier= Modifier.weight(1f))
+                LazyColumn(modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(32.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally)
+                {
+                    items(wHold.L){
+                        Row(modifier= Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceAround){
+                            Text(it.name)
+                            Text(it.mins.toString())
+                        }
+                    }
+                }
 
                 //Clear log
-                Text("space 4", textAlign = TextAlign.Center, modifier= Modifier.weight(1f))
+                FilledIconButton(modifier= Modifier.weight(1f).padding(8.dp).fillMaxWidth(),
+                    onClick={
+                        wHold.reset()
+                    })
+                {
+                    Text("Clear Workout History", modifier= Modifier.weight(1f))
+                }
             }
 
         }
