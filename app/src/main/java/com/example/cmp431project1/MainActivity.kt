@@ -15,6 +15,10 @@ import com.example.cmp431project1.ui.theme.CMP431Project1Theme
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.ui.Alignment
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,11 +33,15 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun TopMenu(name: String, modifier: Modifier = Modifier) {
+    Column(modifier= modifier,
+        verticalArrangement = Arrangement.SpaceEvenly, // Primary Axis (Vertical) spacing
+        horizontalAlignment = Alignment.CenterHorizontally)
+    {
+        Text("one")
+        Text("two")
+        Text("three")
+    }
 }
 @Composable
 fun AppNavigation() {
@@ -44,20 +52,24 @@ fun AppNavigation() {
     ) {
         composable(route = "home") {
 
-            Scaffold( modifier = Modifier.fillMaxSize() ) { innerPadding ->
-                Greeting(
+            Scaffold( modifier = Modifier.fillMaxSize() ) {
+
+                innerPadding -> TopMenu(
                     name = "Android",
-                    modifier = Modifier.padding(innerPadding)
+                    modifier = Modifier.padding(innerPadding).fillMaxWidth()
                 )
+
             }
 
         }
+
+
     }
 }
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     CMP431Project1Theme {
-        Greeting("Android")
+        TopMenu("Android")
     }
 }
