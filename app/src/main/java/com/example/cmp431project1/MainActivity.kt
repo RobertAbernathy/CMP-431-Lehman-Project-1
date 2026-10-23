@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -24,6 +25,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
@@ -50,7 +52,7 @@ fun AppNavigation() {
     ) {
         composable(route = "home") {
 
-            Column(modifier= Modifier.background(Color.Cyan).padding(16.dp).fillMaxSize(),
+            Column(modifier= Modifier.background(Color.Cyan).padding(32.dp).fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally)
             {
@@ -82,14 +84,30 @@ fun AppNavigation() {
                     Column(modifier= Modifier.weight(1f),
                         verticalArrangement=Arrangement.SpaceAround,
                         horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("Strength", modifier= Modifier.weight(1f))
-                        Text("Cardio", modifier= Modifier.weight(1f))
+                        FilledIconButton(modifier= Modifier.weight(1f).padding(8.dp).fillMaxWidth(),
+                            onClick={})
+                        {
+                            Text("Strength")
+                        }
+                        FilledIconButton(modifier= Modifier.weight(1f).padding(8.dp).fillMaxWidth(),
+                            onClick={})
+                        {
+                            Text("Cardio", modifier= Modifier.weight(1f))
+                        }
                     }
                     Column(modifier= Modifier.weight(1f),
                         verticalArrangement=Arrangement.SpaceAround,
                         horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("Flexibility", modifier= Modifier.weight(1f))
-                        Text("HIIT", modifier= Modifier.weight(1f))
+                        FilledIconButton(modifier= Modifier.weight(1f).padding(8.dp).fillMaxWidth(),
+                            onClick={})
+                        {
+                            Text("Flexibility", modifier= Modifier.weight(1f))
+                        }
+                        FilledIconButton(modifier= Modifier.weight(1f).padding(8.dp).fillMaxWidth(),
+                            onClick={})
+                        {
+                            Text("HIIT", modifier= Modifier.weight(1f))
+                        }
                     }
                 }
 
@@ -103,6 +121,21 @@ fun AppNavigation() {
         }
 
 
+        // Page 2
+        composable(route = "exercise_list") {
+            Column(modifier= Modifier.background(Color.Cyan).padding(32.dp).fillMaxSize(),
+                verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally)
+            {
+                Text("test")
+            }
+        }
+
+
+        // Page 3
+        composable(route = "exercise_specific") {
+
+        }
     }
 }
 @Preview(showBackground = true)
