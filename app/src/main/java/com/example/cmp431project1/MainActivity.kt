@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -17,8 +18,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,12 +39,26 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TopMenu(name: String, modifier: Modifier = Modifier) {
     Column(modifier= modifier,
-        verticalArrangement = Arrangement.SpaceEvenly, // Primary Axis (Vertical) spacing
+        verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally)
     {
-        Text("one")
-        Text("two")
-        Text("three")
+        Row(modifier= Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly)
+        {
+            Column(
+                verticalArrangement=Arrangement.SpaceEvenly) {
+                Text("Total Workouts\nCompleted:")
+                Text("TODO")
+            }
+            Column(
+                verticalArrangement=Arrangement.SpaceEvenly) {
+                Text("Total Cumulative\nWorkout Time:")
+                Text("TODO")
+            }
+        }
+        Text("space 2")
+        Text("space 3")
+        Text("space 4")
     }
 }
 @Composable
@@ -56,7 +74,8 @@ fun AppNavigation() {
 
                 innerPadding -> TopMenu(
                     name = "Android",
-                    modifier = Modifier.padding(innerPadding).fillMaxWidth()
+                    modifier = Modifier.background(Color.Cyan)
+                        .padding(innerPadding).fillMaxSize()
                 )
 
             }
