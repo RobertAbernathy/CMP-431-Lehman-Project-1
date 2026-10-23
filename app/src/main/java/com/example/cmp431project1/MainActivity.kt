@@ -17,12 +17,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,30 +39,55 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
+var work=25
 @Composable
-fun TopMenu(name: String, modifier: Modifier = Modifier) {
+fun TopMenu(modifier: Modifier = Modifier) {
     Column(modifier= modifier,
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally)
     {
-        Row(modifier= Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly)
+        //Counters
+        Row(modifier= Modifier.weight(1f).padding(4.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically)
         {
-            Column(
-                verticalArrangement=Arrangement.SpaceEvenly) {
-                Text("Total Workouts\nCompleted:")
-                Text("TODO")
+            Column(modifier= Modifier.weight(1f),
+                verticalArrangement=Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally) {
+                Text("Total Workouts\nCompleted:", textAlign = TextAlign.Center, modifier= Modifier.weight(1f))
+                Text(work.toString(), modifier= Modifier.weight(1f))
             }
-            Column(
-                verticalArrangement=Arrangement.SpaceEvenly) {
-                Text("Total Cumulative\nWorkout Time:")
-                Text("TODO")
+            Column(modifier= Modifier.weight(1f),
+                verticalArrangement=Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally) {
+                Text("Total Cumulative\nWorkout Time:", textAlign = TextAlign.Center, modifier= Modifier.weight(1f))
+                Text("TODO", modifier= Modifier.weight(1f))
             }
         }
-        Text("space 2")
-        Text("space 3")
-        Text("space 4")
+
+        //Picker
+        Row(modifier= Modifier.weight(1f).padding(4.dp),
+            horizontalArrangement = Arrangement.SpaceAround)
+        {
+            Column(modifier= Modifier.weight(1f),
+                verticalArrangement=Arrangement.SpaceAround,
+                horizontalAlignment = Alignment.CenterHorizontally) {
+                Text("Strength", modifier= Modifier.weight(1f))
+                Text("Cardio", modifier= Modifier.weight(1f))
+            }
+            Column(modifier= Modifier.weight(1f),
+                verticalArrangement=Arrangement.SpaceAround,
+                horizontalAlignment = Alignment.CenterHorizontally) {
+                Text("Flexibility", modifier= Modifier.weight(1f))
+                Text("HIIT", modifier= Modifier.weight(1f))
+            }
+        }
+
+        //History log
+        Text("space 3", textAlign = TextAlign.Center, modifier= Modifier.weight(1f))
+
+        //Clear log
+        Text("space 4", textAlign = TextAlign.Center, modifier= Modifier.weight(1f))
     }
 }
 @Composable
@@ -73,7 +102,6 @@ fun AppNavigation() {
             Scaffold( modifier = Modifier.fillMaxSize() ) {
 
                 innerPadding -> TopMenu(
-                    name = "Android",
                     modifier = Modifier.background(Color.Cyan)
                         .padding(innerPadding).fillMaxSize()
                 )
@@ -89,6 +117,6 @@ fun AppNavigation() {
 @Composable
 fun GreetingPreview() {
     CMP431Project1Theme {
-        TopMenu("Android")
+        TopMenu(modifier = Modifier.fillMaxSize())
     }
 }
