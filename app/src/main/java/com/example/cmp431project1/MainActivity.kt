@@ -25,6 +25,8 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
@@ -42,6 +44,16 @@ class MainActivity : ComponentActivity() {
     }
 }
 var work=25
+var curExercise = exercise("dummy", "this shouldn't be seen", 0)
+var curCat = emptyList<exercise>()
+var catName="dummy"
+val str=listOf<exercise>(
+    exercise("1", "one", 0),
+    exercise("2", "two", 1),
+    exercise("3", "three", 2),
+)
+
+class exercise(val name:String, val descrpt: String, val difficulty: Int)
 
 @Composable
 fun AppNavigation() {
@@ -85,12 +97,18 @@ fun AppNavigation() {
                         verticalArrangement=Arrangement.SpaceAround,
                         horizontalAlignment = Alignment.CenterHorizontally) {
                         FilledIconButton(modifier= Modifier.weight(1f).padding(8.dp).fillMaxWidth(),
-                            onClick={})
+                            onClick={
+                                curCat=str
+                                catName="Strength"
+                                navController.navigate("exercise_list")
+                            })
                         {
                             Text("Strength")
                         }
                         FilledIconButton(modifier= Modifier.weight(1f).padding(8.dp).fillMaxWidth(),
-                            onClick={})
+                            onClick={
+                                navController.navigate("exercise_list")
+                            })
                         {
                             Text("Cardio", modifier= Modifier.weight(1f))
                         }
@@ -99,12 +117,16 @@ fun AppNavigation() {
                         verticalArrangement=Arrangement.SpaceAround,
                         horizontalAlignment = Alignment.CenterHorizontally) {
                         FilledIconButton(modifier= Modifier.weight(1f).padding(8.dp).fillMaxWidth(),
-                            onClick={})
+                            onClick={
+                                navController.navigate("exercise_list")
+                            })
                         {
                             Text("Flexibility", modifier= Modifier.weight(1f))
                         }
                         FilledIconButton(modifier= Modifier.weight(1f).padding(8.dp).fillMaxWidth(),
-                            onClick={})
+                            onClick={
+                                navController.navigate("exercise_list")
+                            })
                         {
                             Text("HIIT", modifier= Modifier.weight(1f))
                         }
@@ -123,11 +145,16 @@ fun AppNavigation() {
 
         // Page 2
         composable(route = "exercise_list") {
-            Column(modifier= Modifier.background(Color.Cyan).padding(32.dp).fillMaxSize(),
-                verticalArrangement = Arrangement.SpaceEvenly,
+            LazyColumn(modifier= Modifier.background(Color.Cyan).padding(32.dp).fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(32.dp),
                 horizontalAlignment = Alignment.CenterHorizontally)
             {
-                Text("test")
+                item{
+                    Text(catName, textAlign = TextAlign.Center)
+                }
+                items(items=curCat){
+                    Text(it.name, textAlign = TextAlign.Center)
+                }
             }
         }
 
