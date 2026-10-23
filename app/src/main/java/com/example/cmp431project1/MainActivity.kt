@@ -28,9 +28,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.FilledIconButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.navigation.NavBackStackEntry
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,22 +51,40 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+class exercise(val name:String, val descrpt: String, val difficulty: String, val c: Color)
+class workout(val name:String, val mins:Int)
+class workoutHold{
+    var sum=0;
+    var L = mutableListOf<workout>()
+    fun add(w: workout){
+        sum+=w.mins
+        L.add(w)
+    }
+    fun reset(){
+        sum=0
+        L=mutableListOf<workout>()
+    }
+}
 var work=25
 var curExercise = exercise("dummy", "this shouldn't be seen",
     "dummy", Color.Black)
 var curCat = emptyList<exercise>()
 var catName="dummy"
 val str=listOf<exercise>(
-    exercise("1", "one", "Beginner", Color.Green),
-    exercise("2", "two", "Intermediate", Color.Yellow),
-    exercise("3", "three", "Advanced", Color.Red)
+    exercise("1", "one",
+        "Beginner", Color.Green),
+    exercise("2", "two",
+        "Intermediate", Color.Yellow),
+    exercise("3", "three",
+        "Advanced", Color.Red)
 )
+var wHold= workoutHold()
 
-class exercise(val name:String, val descrpt: String, val difficulty: String, val c: Color)
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
+
     NavHost(
         navController = navController,
         startDestination = "home" // The initial screen route
@@ -79,7 +105,7 @@ fun AppNavigation() {
                         horizontalAlignment = Alignment.CenterHorizontally) {
                         Text("Total Workouts\nCompleted:", textAlign = TextAlign.Center
                             , modifier= Modifier.weight(1f))
-                        Text(work.toString(), modifier= Modifier.weight(1f))
+                        Text(wHold.sum.toString(), modifier= Modifier.weight(1f))
                     }
                     Column(modifier= Modifier.weight(1f),
                         verticalArrangement=Arrangement.SpaceEvenly,
@@ -180,12 +206,35 @@ fun AppNavigation() {
 
         // Page 3
         composable(route = "exercise_specific") {
+            var text by rememberSaveable() { mutableStateOf("") }
             Column(modifier= Modifier.background(Color.Cyan).padding(32.dp).fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally)
             {
+                FilledIconButton(modifier= Modifier.padding(8.dp).fillMaxWidth(),
+                    onClick={
+                        navController.popBackStack()
+                    })
+                {
+                    Text("BACK")
+                }
                 Text(curExercise.name)
+                Text(curExercise.difficulty)
                 Text(curExercise.descrpt)
+                OutlinedTextField(
+                    value = text,
+                    onValueChange = { text = it },
+                    label = { Text("Enter guess") }
+                )
+                FilledIconButton(modifier= Modifier.padding(8.dp).fillMaxWidth(),
+                    onClick={
+                        wHold.add(workout(curExercise.name, text.toInt()))
+                        text=""
+                    })
+                {
+                    Text("Do Exercise for selected time")
+                }
+
             }
         }
     }
