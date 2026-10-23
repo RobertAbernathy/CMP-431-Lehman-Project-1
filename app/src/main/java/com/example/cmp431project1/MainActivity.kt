@@ -44,16 +44,17 @@ class MainActivity : ComponentActivity() {
     }
 }
 var work=25
-var curExercise = exercise("dummy", "this shouldn't be seen", 0)
+var curExercise = exercise("dummy", "this shouldn't be seen",
+    "dummy", Color.Black)
 var curCat = emptyList<exercise>()
 var catName="dummy"
 val str=listOf<exercise>(
-    exercise("1", "one", 0),
-    exercise("2", "two", 1),
-    exercise("3", "three", 2),
+    exercise("1", "one", "Beginner", Color.Green),
+    exercise("2", "two", "Intermediate", Color.Yellow),
+    exercise("3", "three", "Advanced", Color.Red)
 )
 
-class exercise(val name:String, val descrpt: String, val difficulty: Int)
+class exercise(val name:String, val descrpt: String, val difficulty: String, val c: Color)
 
 @Composable
 fun AppNavigation() {
@@ -152,8 +153,26 @@ fun AppNavigation() {
                 item{
                     Text(catName, textAlign = TextAlign.Center)
                 }
+                item{
+                    FilledIconButton(modifier= Modifier.padding(8.dp).fillMaxWidth(),
+                        onClick={
+                            navController.popBackStack()
+                        })
+                    {
+                        Text("BACK")
+                    }
+                }
                 items(items=curCat){
-                    Text(it.name, textAlign = TextAlign.Center)
+                    FilledIconButton(modifier= Modifier.padding(8.dp).fillMaxWidth(),
+                        onClick={
+                            curExercise=it
+                            navController.navigate("exercise_specific")
+                        })
+                    {
+                        Text(it.name)
+                    }
+                    Text(it.difficulty)
+                    Text(it.descrpt)
                 }
             }
         }
@@ -161,7 +180,13 @@ fun AppNavigation() {
 
         // Page 3
         composable(route = "exercise_specific") {
-
+            Column(modifier= Modifier.background(Color.Cyan).padding(32.dp).fillMaxSize(),
+                verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally)
+            {
+                Text(curExercise.name)
+                Text(curExercise.descrpt)
+            }
         }
     }
 }
