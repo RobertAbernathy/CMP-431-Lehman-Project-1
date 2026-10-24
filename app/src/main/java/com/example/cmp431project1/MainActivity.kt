@@ -74,37 +74,100 @@ data class WorkUIState(
     val errorColor:Color=Color.Black,
     val showAlert: Boolean=false,
     val lastTime:Int=0,
+
     val str: List<Exercise> =listOf(
-        Exercise("1", "one", "dummy 1", 5,
+        Exercise("Push-up", "Classic push-up",
+            "1. Get on all fours face-down with your legs straight fully stretched out\n" +
+                    "2. Put your hands by your shoulders and have them flat on the ground\n" +
+                    "3. Lift yourself until your arms are outstretched", 2,
             "Beginner", Color.Green, 0),
-        Exercise("2", "two", "dummy 1", 5,
-            "Intermediate", Color.Yellow, 1),
-        Exercise("3", "three", "dummy 1", 5,
-            "Advanced", Color.Red, 2)
+
+        Exercise("Sit-up", "Lift your body upward",
+            "1. Lie on your back with your hands at your chest and your knees slightly bent\n" +
+                    "2. Lift your torso up using your abs without moving your legs\n" +
+                    "3. Go as far forward as you can without moving your legs", 2,
+            "Beginner", Color.Green, 1),
+
+        Exercise("Curtsy Lunge", "Bend your Leg back around your other leg",
+            "1. Start from a standing position\n" +
+                    "2. Step back with your left foot backward and crossing your right leg\n" +
+                    "3. Bend both knees until your left knee touches the ground\n" +
+                    "4. Return to the starting position by pushing off with your left foot\n" +
+                    "5. Repeat same foot until you are ready to switch to the other", 2,
+            "Intermediate", Color.Yellow, 2)
     ),
+
     val cardio: List<Exercise> =listOf(
-        Exercise("1", "one", "dummy 1", 5,
+        Exercise("High Knees", "Lift your knees up",
+            "1. Start in a standing position and hold hands slightly out at your waist\n" +
+                    "2. Lift one knee to your stationary hand and touch it\n" +
+                    "3. Bring it back down and do the other knee and repeat", 2,
             "Beginner", Color.Green, 0),
-        Exercise("2", "two", "dummy 1", 5,
+
+        Exercise("Bear Crawl", "Knees slightly above the ground",
+            "1. Get on all fours with you arms stretched down and knees below you\n" +
+                    "2. Lift your knees slightly above the ground, but still under you\n" +
+                    "3. Move left foot/right hand forward\n" +
+                    "4. Move right foot/left hand forward\n" +
+                    "5. Keep your back straight as you can", 1,
             "Intermediate", Color.Yellow, 1),
-        Exercise("3", "three", "dummy 1", 5,
+
+        Exercise("Burpee", "Go up and down",
+            "1. Start in standing position with hands at side\n" +
+                    "2. Jump upward\n3. When you land squat down with your hands on the ground\n" +
+                    "4. Move your legs back as far as you can quickly\n" +
+                    "5. Move them back under yourself\n" +
+                    "6. Go back to standing and repeat", 1,
             "Advanced", Color.Red, 2)
     ),
+
     val flex: List<Exercise> =listOf(
-        Exercise("1", "one", "dummy 1", 5,
+        Exercise("Quadriceps Stretch", "Pull your foot",
+            "1. Stand straight up\n2. Lift and pull your foot back behind your leg\n" +
+                    "3. Pull gently and keep your back straight and knees together\n" +
+                    "4. Repeat with your other leg", 2,
             "Beginner", Color.Green, 0),
-        Exercise("2", "two", "dummy 1", 5,
+
+        Exercise("Lunge with Twist", "Bring left foot and right hand forward",
+            "1. Start from standing position\n" +
+                    "2. Bring your left foot and keep you other right knee straight\n" +
+                    "3. Put your right hand on the ground next to the forward foot\n" +
+                    "4. Stretch your left hand upward while you keep" +
+                    " your right hand on the ground\n" +
+                    "5. Hold for a period of time\n" +
+                    "6. Repeat with your other side", 2,
             "Intermediate", Color.Yellow, 1),
-        Exercise("3", "three", "dummy 1", 5,
-            "Advanced", Color.Red, 2)
+
+        Exercise("Frog Stretch", "Slide your knees back",
+            "1. Get on all fours with your knees on the ground\n" +
+                    "2. Slide your knees outward until they are further" +
+                    " apart than your shoulders\n" +
+                    "3. Turn your feet so that you are resting on the inner sides of them\n" +
+                    "4. Move your hip backwards between your feet\n" +
+                    "5. Move your hands beneath your shoulders\n" +
+                    "6. Hold this pose for a period of time", 1,
+            "Intermediate", Color.Yellow, 2)
     ),
+
     val hiit: List<Exercise> =listOf(
-        Exercise("1", "one", "dummy 1", 5,
+        Exercise("Jumping Jacks", "A jumping based exercise",
+            "1. Start with feet together standing with hands at sides\n" +
+                    "2. Jump and moves feet apart sideways while clapping hands above your head\n" +
+                    "3. Jump again but now move feet together and hands back to waist\n" +
+                    "4. Repeat steps 2 and 3", 1,
             "Beginner", Color.Green, 0),
-        Exercise("2", "two", "dummy 1", 5,
+
+        Exercise("Toe Touch Crunch", "Lie on your back and stretch",
+            "1. Lie on you back\n2. Lift your legs up\n" +
+                    "3. Reach your arms towards your toes as best you can", 5,
             "Intermediate", Color.Yellow, 1),
-        Exercise("3", "three", "dummy 1", 5,
-            "Advanced", Color.Red, 2)
+
+        Exercise("Inchworm", "Get on all fours",
+            "1. Get on all fours\n" +
+                    "2. Move your hands as if walking as far forward as you can go\n" +
+                    "3. Move your feet as when walking, keeping you hands on the ground," +
+                    "until you reach as close as you can to your hands", 1,
+            "Intermediate", Color.Yellow, 2)
     )
 )
 class MainViewModel: ViewModel(){
