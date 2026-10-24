@@ -353,23 +353,28 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                         Text("Exercise Name:")
                         Text("Time (mins):")
                     }
-
-                    LazyColumn(state=listState,
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    )
-                    {
-                        items(uiState.wList) {
-                            Card(colors= CardDefaults.cardColors(
+                    if(uiState.wList.isEmpty()){
+                        Text("No workouts logged yet. Select a category above to get started!",
+                            textAlign = TextAlign.Center)
+                    }
+                    else{
+                        LazyColumn(state=listState,
+                            verticalArrangement = Arrangement.spacedBy(12.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        )
+                        {
+                            items(uiState.wList) {
+                                Card(colors= CardDefaults.cardColors(
                                     containerColor = Color.LightGray,
                                 )
-                            ) {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceAround
                                 ) {
-                                    Text(it.name)
-                                    Text(it.mins.toString())
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.SpaceAround
+                                    ) {
+                                        Text(it.name)
+                                        Text(it.mins.toString())
+                                    }
                                 }
                             }
                         }
