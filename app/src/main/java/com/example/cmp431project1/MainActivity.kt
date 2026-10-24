@@ -238,20 +238,19 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                 //History log
 
                 Card(modifier = Modifier.weight(1f)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceAround
+                    ) {
+                        Text("Exercise Name:")
+                        Text("Time (mins):")
+                    }
+
                     LazyColumn(state=listState,
                         verticalArrangement = Arrangement.spacedBy(12.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     )
                     {
-                        item{
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceAround
-                            ) {
-                                Text("Exercise Name:")
-                                Text("Time (mins):")
-                            }
-                        }
                         items(uiState.wList) {
                             Card(colors= CardDefaults.cardColors(
                                     containerColor = Color.LightGray,
