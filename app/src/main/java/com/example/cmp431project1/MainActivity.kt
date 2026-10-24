@@ -6,7 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -19,11 +18,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -31,37 +27,23 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavBackStackEntry
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BasicAlertDialog
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBar
-import androidx.compose.ui.draw.clip
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,16 +56,16 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-class Exercise(val name:String, val descrpt: String,
+class Exercise(val name:String, val description: String,
                val difficulty: String, val c: Color, val id:Int)
 class Workout(val name:String, val mins:Int, val id:Int)
 
 data class WorkUIState(
     var sum:Int=0,
-    var wList: List<Workout> = emptyList<Workout>(),
+    var wList: List<Workout> = emptyList(),
     val curExercise: Exercise = Exercise("dummy", "this shouldn't be seen",
         "dummy", Color.Black, 0),
-    val curCat: List<Exercise> = emptyList<Exercise>(),
+    val curCat: List<Exercise> = emptyList(),
     val catName: String ="dummy",
     val inText:String="",
     val errorText:String="Please Input Number",
@@ -91,7 +73,7 @@ data class WorkUIState(
     val errorColor:Color=Color.Black,
     val showAlert: Boolean=false,
     val lastTime:Int=0,
-    val str: List<Exercise> =listOf<Exercise>(
+    val str: List<Exercise> =listOf(
         Exercise("1", "one",
             "Beginner", Color.Green, 0),
         Exercise("2", "two",
@@ -99,7 +81,7 @@ data class WorkUIState(
         Exercise("3", "three",
             "Advanced", Color.Red, 2)
     ),
-    val cardio: List<Exercise> =listOf<Exercise>(
+    val cardio: List<Exercise> =listOf(
         Exercise("1", "one",
             "Beginner", Color.Green, 0),
         Exercise("2", "two",
@@ -107,7 +89,7 @@ data class WorkUIState(
         Exercise("3", "three",
             "Advanced", Color.Red, 2)
     ),
-    val flex: List<Exercise> =listOf<Exercise>(
+    val flex: List<Exercise> =listOf(
         Exercise("1", "one",
             "Beginner", Color.Green, 0),
         Exercise("2", "two",
@@ -115,7 +97,7 @@ data class WorkUIState(
         Exercise("3", "three",
             "Advanced", Color.Red, 2)
     ),
-    val hiit: List<Exercise> =listOf<Exercise>(
+    val hiit: List<Exercise> =listOf(
         Exercise("1", "one",
             "Beginner", Color.Green, 0),
         Exercise("2", "two",
@@ -144,7 +126,7 @@ class MainViewModel: ViewModel(){
     fun reset(){
         _uiState.update{
             currentState -> currentState.copy(
-                wList=emptyList<Workout>(),
+                wList=emptyList(),
                 sum=0
             )
         }
@@ -505,8 +487,8 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                         items = uiState.curCat,
                         key = { it.id }
                     ) {
-                        Card() {
-                            Column() {
+                        Card {
+                            Column {
                                 FilledIconButton(
                                     modifier = Modifier
                                         .padding(4.dp)
@@ -536,7 +518,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                                     )
                                 }
                                 Text(
-                                    it.descrpt, textAlign = TextAlign.Center,
+                                    it.description, textAlign = TextAlign.Center,
                                     modifier = Modifier
                                         .padding(2.dp)
                                         .fillMaxWidth()
@@ -555,7 +537,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                 BasicAlertDialog(
                     onDismissRequest = {},
                     content = {
-                        Column() {
+                        Column {
                             Card(modifier = Modifier
                                 .height(50.dp)
                                 .fillMaxWidth()){
@@ -632,7 +614,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                             .fillMaxWidth()
                     ) {
                         Text(
-                            uiState.curExercise.descrpt, textAlign = TextAlign.Center,
+                            uiState.curExercise.description, textAlign = TextAlign.Center,
                             modifier = Modifier
                                 .padding(2.dp)
                                 .fillMaxWidth()
