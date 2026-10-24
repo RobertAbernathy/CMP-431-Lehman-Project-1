@@ -74,10 +74,7 @@ class workoutHold{
         L=mutableListOf<workout>()
     }
 }
-var curExercise = exercise("dummy", "this shouldn't be seen",
-    "dummy", Color.Black)
-var curCat = emptyList<exercise>()
-var catName="dummy"
+
 val str=listOf<exercise>(
     exercise("1", "one",
         "Beginner", Color.Green),
@@ -89,7 +86,11 @@ val str=listOf<exercise>(
 
 data class workUIstate(
     var sum:Int=0,
-    var L: List<workout> = emptyList<workout>()
+    var wList: List<workout> = emptyList<workout>(),
+    val curExercise: exercise = exercise("dummy", "this shouldn't be seen",
+        "dummy", Color.Black),
+    val curCat: List<exercise> = emptyList<exercise>(),
+    val catName: String ="dummy"
 )
 class mainViewModel: ViewModel(){
     private val _uiState= MutableStateFlow(workUIstate())
@@ -97,7 +98,7 @@ class mainViewModel: ViewModel(){
     fun add(w: workout){
         _uiState.update{
             currentState -> currentState.copy(
-                L=currentState.L+w,
+                wList=currentState.wList+w,
                 sum=currentState.sum+w.mins
             )
         }
@@ -105,8 +106,25 @@ class mainViewModel: ViewModel(){
     fun reset(){
         _uiState.update{
             currentState -> currentState.copy(
-                L=emptyList<workout>(),
+                wList=emptyList<workout>(),
                 sum=0
+            )
+        }
+    }
+
+    fun setCat(l: List<exercise>, s:String){
+        _uiState.update{
+            currentState -> currentState.copy(
+                curCat = l,
+                catName = s
+            )
+        }
+    }
+
+    fun setEx(e: exercise){
+        _uiState.update{
+            currentState -> currentState.copy(
+                curExercise = e
             )
         }
     }
@@ -157,8 +175,7 @@ fun AppNavigation(viewModel: mainViewModel=viewModel()) {
                         horizontalAlignment = Alignment.CenterHorizontally) {
                         FilledIconButton(modifier= Modifier.weight(1f).padding(8.dp).fillMaxWidth(),
                             onClick={
-                                curCat=str
-                                catName="Strength"
+                                viewModel.setCat(str,"Strength")
                                 navController.navigate("exercise_list")
                             })
                         {
@@ -198,7 +215,7 @@ fun AppNavigation(viewModel: mainViewModel=viewModel()) {
                     verticalArrangement = Arrangement.spacedBy(32.dp),
                     horizontalAlignment = Alignment.CenterHorizontally)
                 {
-                    items(uiState.L){
+                    items(uiState.wList){
                         Row(modifier= Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceAround){
                             Text(it.name)
@@ -227,7 +244,7 @@ fun AppNavigation(viewModel: mainViewModel=viewModel()) {
                 horizontalAlignment = Alignment.CenterHorizontally)
             {
                 item{
-                    Text(catName, textAlign = TextAlign.Center)
+                    Text(uiState.catName, textAlign = TextAlign.Center)
                 }
                 item{
                     FilledIconButton(modifier= Modifier.padding(8.dp).fillMaxWidth(),
@@ -238,10 +255,10 @@ fun AppNavigation(viewModel: mainViewModel=viewModel()) {
                         Text("BACK")
                     }
                 }
-                items(items=curCat){
+                items(items=uiState.curCat){
                     FilledIconButton(modifier= Modifier.padding(8.dp).fillMaxWidth(),
                         onClick={
-                            curExercise=it
+                            viewModel.setEx(it)
                             navController.navigate("exercise_specific")
                         })
                     {
@@ -268,9 +285,9 @@ fun AppNavigation(viewModel: mainViewModel=viewModel()) {
                 {
                     Text("BACK")
                 }
-                Text(curExercise.name)
-                Text(curExercise.difficulty)
-                Text(curExercise.descrpt)
+                Text(uiState.curExercise.name)
+                Text(uiState.curExercise.difficulty)
+                Text(uiState.curExercise.descrpt)
                 OutlinedTextField(
                     value = text,
                     onValueChange = { text = it },
@@ -278,7 +295,7 @@ fun AppNavigation(viewModel: mainViewModel=viewModel()) {
                 )
                 FilledIconButton(modifier= Modifier.padding(8.dp).fillMaxWidth(),
                     onClick={
-                        viewModel.add(workout(curExercise.name, text.toInt()))
+                        viewModel.add(workout(uiState.curExercise.name, text.toInt()))
                         text=""
                     })
                 {
