@@ -342,7 +342,9 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                                     .fillMaxWidth(),
                                 onClick = {
                                     viewModel.setCat(uiState.str, "Strength")
-                                    navController.navigate("exercise_list")
+                                    navController.navigate("exercise_list"){
+                                        launchSingleTop=true
+                                    }
                                 })
                             {
                                 Text("Strength")
@@ -354,7 +356,9 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                                     .fillMaxWidth(),
                                 onClick = {
                                     viewModel.setCat(uiState.cardio, "Cardio")
-                                    navController.navigate("exercise_list")
+                                    navController.navigate("exercise_list"){
+                                        launchSingleTop=true
+                                    }
                                 })
                             {
                                 Text("Cardio", modifier = Modifier.weight(1f))
@@ -372,7 +376,9 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                                     .fillMaxWidth(),
                                 onClick = {
                                     viewModel.setCat(uiState.flex, "Flexibility")
-                                    navController.navigate("exercise_list")
+                                    navController.navigate("exercise_list"){
+                                        launchSingleTop=true
+                                    }
                                 })
                             {
                                 Text("Flexibility", modifier = Modifier.weight(1f))
@@ -384,7 +390,9 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                                     .fillMaxWidth(),
                                 onClick = {
                                     viewModel.setCat(uiState.hiit, "HIIT")
-                                    navController.navigate("exercise_list")
+                                    navController.navigate("exercise_list"){
+                                        launchSingleTop=true
+                                    }
                                 })
                             {
                                 Text("HIIT", modifier = Modifier.weight(1f))
@@ -470,7 +478,11 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                                 modifier = Modifier
                                     .padding(8.dp),
                                 onClick = {
-                                    navController.popBackStack()
+                                    navController.navigate("home"){
+                                        popUpTo("home"){
+                                            inclusive=true
+                                        }
+                                    }
                                 })
                             {
                                 Text("<-")
@@ -501,7 +513,9 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                                         .fillMaxWidth(),
                                     onClick = {
                                         viewModel.setEx(it)
-                                        navController.navigate("exercise_specific")
+                                        navController.navigate("exercise_specific"){
+                                            launchSingleTop=true
+                                        }
                                     })
                                 {
                                     Text(it.name)
