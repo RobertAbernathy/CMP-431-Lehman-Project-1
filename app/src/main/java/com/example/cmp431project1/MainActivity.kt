@@ -56,7 +56,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-class Exercise(val name:String, val description: String,
+class Exercise(val name:String, val preview: String,
+               val steps:String, val recDur:Int,
                val difficulty: String, val c: Color, val id:Int)
 class Workout(val name:String, val mins:Int, val id:Int)
 
@@ -64,7 +65,7 @@ data class WorkUIState(
     var sum:Int=0,
     var wList: List<Workout> = emptyList(),
     val curExercise: Exercise = Exercise("dummy", "this shouldn't be seen",
-        "dummy", Color.Black, 0),
+        "dummy 1", 5,"dummy", Color.Black, 0),
     val curCat: List<Exercise> = emptyList(),
     val catName: String ="dummy",
     val inText:String="",
@@ -74,35 +75,35 @@ data class WorkUIState(
     val showAlert: Boolean=false,
     val lastTime:Int=0,
     val str: List<Exercise> =listOf(
-        Exercise("1", "one",
+        Exercise("1", "one", "dummy 1", 5,
             "Beginner", Color.Green, 0),
-        Exercise("2", "two",
+        Exercise("2", "two", "dummy 1", 5,
             "Intermediate", Color.Yellow, 1),
-        Exercise("3", "three",
+        Exercise("3", "three", "dummy 1", 5,
             "Advanced", Color.Red, 2)
     ),
     val cardio: List<Exercise> =listOf(
-        Exercise("1", "one",
+        Exercise("1", "one", "dummy 1", 5,
             "Beginner", Color.Green, 0),
-        Exercise("2", "two",
+        Exercise("2", "two", "dummy 1", 5,
             "Intermediate", Color.Yellow, 1),
-        Exercise("3", "three",
+        Exercise("3", "three", "dummy 1", 5,
             "Advanced", Color.Red, 2)
     ),
     val flex: List<Exercise> =listOf(
-        Exercise("1", "one",
+        Exercise("1", "one", "dummy 1", 5,
             "Beginner", Color.Green, 0),
-        Exercise("2", "two",
+        Exercise("2", "two", "dummy 1", 5,
             "Intermediate", Color.Yellow, 1),
-        Exercise("3", "three",
+        Exercise("3", "three", "dummy 1", 5,
             "Advanced", Color.Red, 2)
     ),
     val hiit: List<Exercise> =listOf(
-        Exercise("1", "one",
+        Exercise("1", "one", "dummy 1", 5,
             "Beginner", Color.Green, 0),
-        Exercise("2", "two",
+        Exercise("2", "two", "dummy 1", 5,
             "Intermediate", Color.Yellow, 1),
-        Exercise("3", "three",
+        Exercise("3", "three", "dummy 1", 5,
             "Advanced", Color.Red, 2)
     )
 )
@@ -518,7 +519,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                                     )
                                 }
                                 Text(
-                                    it.description, textAlign = TextAlign.Center,
+                                    it.preview, textAlign = TextAlign.Center,
                                     modifier = Modifier
                                         .padding(2.dp)
                                         .fillMaxWidth()
@@ -609,12 +610,27 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                     }
                     Card(
                         modifier = Modifier
-                            .weight(1f)
+                            .weight(1.3f)
                             .padding(2.dp)
                             .fillMaxWidth()
                     ) {
                         Text(
-                            uiState.curExercise.description, textAlign = TextAlign.Center,
+                            uiState.curExercise.steps, textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .padding(2.dp)
+                                .fillMaxWidth()
+                        )
+                    }
+                    Card(
+                            modifier = Modifier
+                                .weight(0.3f)
+                                .padding(2.dp)
+                                .fillMaxWidth()
+                            ) {
+                        Text(
+                            "Recommended Duration: "+uiState.curExercise.recDur.toString()
+                            +" Minutes",
+                            textAlign = TextAlign.Center,
                             modifier = Modifier
                                 .padding(2.dp)
                                 .fillMaxWidth()
@@ -622,7 +638,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                     }
                     Card(
                         modifier = Modifier
-                            .weight(0.7f)
+                            .weight(0.3f)
                             .padding(2.dp)
                             .fillMaxWidth()
                     ) {
@@ -632,12 +648,12 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                                 .fillMaxWidth(),
                             value = uiState.inText,
                             onValueChange = { viewModel.setText(it) },
-                            label = { Text("Enter Minutes") }
+                            label = { Text("Minutes Completed") }
                         )
                     }
                     FilledIconButton(
                         modifier = Modifier
-                            .weight(1f)
+                            .weight(0.4f)
                             .padding(8.dp)
                             .fillMaxWidth(),
                         enabled = uiState.buttonOn,
@@ -657,7 +673,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                     }
                     Card(
                         modifier = Modifier
-                            .weight(1f)
+                            .weight(0.6f)
                             .padding(4.dp)
                             .fillMaxWidth()
                     ) {
