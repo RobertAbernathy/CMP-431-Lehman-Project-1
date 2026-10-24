@@ -60,42 +60,31 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-class exercise(val name:String, val descrpt: String, val difficulty: String, val c: Color)
-class workout(val name:String, val mins:Int)
-class workoutHold{
-    var sum=0
-    var L = mutableListOf<workout>()
-    fun add(w: workout){
-        sum+=w.mins
-        L.add(w)
-    }
-    fun reset(){
-        sum=0
-        L=mutableListOf<workout>()
-    }
-}
+class Exercise(val name:String, val descrpt: String, val difficulty: String, val c: Color)
+class Workout(val name:String, val mins:Int)
 
-val str=listOf<exercise>(
-    exercise("1", "one",
+
+val str=listOf<Exercise>(
+    Exercise("1", "one",
         "Beginner", Color.Green),
-    exercise("2", "two",
+    Exercise("2", "two",
         "Intermediate", Color.Yellow),
-    exercise("3", "three",
+    Exercise("3", "three",
         "Advanced", Color.Red)
 )
 
-data class workUIstate(
+data class WorkUIstate(
     var sum:Int=0,
-    var wList: List<workout> = emptyList<workout>(),
-    val curExercise: exercise = exercise("dummy", "this shouldn't be seen",
+    var wList: List<Workout> = emptyList<Workout>(),
+    val curExercise: Exercise = Exercise("dummy", "this shouldn't be seen",
         "dummy", Color.Black),
-    val curCat: List<exercise> = emptyList<exercise>(),
+    val curCat: List<Exercise> = emptyList<Exercise>(),
     val catName: String ="dummy"
 )
-class mainViewModel: ViewModel(){
-    private val _uiState= MutableStateFlow(workUIstate())
-    val uiState: StateFlow<workUIstate> = _uiState.asStateFlow()
-    fun add(w: workout){
+class MainViewModel: ViewModel(){
+    private val _uiState= MutableStateFlow(WorkUIstate())
+    val uiState: StateFlow<WorkUIstate> = _uiState.asStateFlow()
+    fun add(w: Workout){
         _uiState.update{
             currentState -> currentState.copy(
                 wList=currentState.wList+w,
@@ -106,13 +95,13 @@ class mainViewModel: ViewModel(){
     fun reset(){
         _uiState.update{
             currentState -> currentState.copy(
-                wList=emptyList<workout>(),
+                wList=emptyList<Workout>(),
                 sum=0
             )
         }
     }
 
-    fun setCat(l: List<exercise>, s:String){
+    fun setCat(l: List<Exercise>, s:String){
         _uiState.update{
             currentState -> currentState.copy(
                 curCat = l,
@@ -121,7 +110,7 @@ class mainViewModel: ViewModel(){
         }
     }
 
-    fun setEx(e: exercise){
+    fun setEx(e: Exercise){
         _uiState.update{
             currentState -> currentState.copy(
                 curExercise = e
@@ -131,7 +120,7 @@ class mainViewModel: ViewModel(){
 }
 
 @Composable
-fun AppNavigation(viewModel: mainViewModel=viewModel()) {
+fun AppNavigation(viewModel: MainViewModel=viewModel()) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val navController = rememberNavController()
 
@@ -295,7 +284,7 @@ fun AppNavigation(viewModel: mainViewModel=viewModel()) {
                 )
                 FilledIconButton(modifier= Modifier.padding(8.dp).fillMaxWidth(),
                     onClick={
-                        viewModel.add(workout(uiState.curExercise.name, text.toInt()))
+                        viewModel.add(Workout(uiState.curExercise.name, text.toInt()))
                         text=""
                     })
                 {
