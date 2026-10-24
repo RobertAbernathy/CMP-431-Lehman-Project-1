@@ -605,9 +605,9 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                             Card(modifier = Modifier
                                 .height(50.dp)
                                 .fillMaxWidth()){
-                                Text("Accepted: "+uiState.curExercise.name+" for "+
-                                        uiState.lastTime+" minute(s)",
-                                    modifier = Modifier.padding(16.dp),
+                                Text("Added: "+uiState.curExercise.name+" for "+
+                                        uiState.lastTime+" min(s)",
+                                    modifier = Modifier.padding(4.dp).fillMaxWidth(),
                                     textAlign = TextAlign.Center)
                             }
                             FilledIconButton(modifier = Modifier.fillMaxWidth(),
