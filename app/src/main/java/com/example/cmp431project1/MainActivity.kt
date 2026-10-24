@@ -243,162 +243,211 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
     ) {
         composable(route = "home") {
             val listState = rememberLazyListState()
-            Column(modifier= Modifier
-                .background(Color.Cyan)
-                .padding(32.dp),
-                verticalArrangement = Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.CenterHorizontally)
-            {
-                //Counters
-                Row(modifier= Modifier
-                    .weight(1f)
-                    .padding(4.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically)
-                {
-                    Card(modifier= Modifier
-                        .weight(1f)
-                        .padding(4.dp)){
-                        Column(verticalArrangement=Arrangement.SpaceBetween,
-                            horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Total Workouts\nCompleted:", textAlign = TextAlign.Center,
-                                modifier= Modifier
-                                    .weight(1f)
-                                    .padding(20.dp))
-                            Text(uiState.wList.size.toString(),
-                                modifier= Modifier
-                                    .weight(1f)
-                                    .padding(16.dp))
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = {
+                            Text("Workout Tracker",
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Center
+                            )
                         }
-                    }
-
-                    Card(modifier= Modifier
-                        .weight(1f)
-                        .padding(4.dp)){
-                            Column(verticalArrangement=Arrangement.SpaceEvenly,
-                            horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Total Cumulative\nWorkout Time:", textAlign = TextAlign.Center,
-                                modifier= Modifier
-                                    .weight(1f)
-                                    .padding(16.dp))
-                            Text(uiState.sum.toString(),
-                                modifier= Modifier
-                                    .weight(1f)
-                                    .padding(16.dp))
-                        }
-                    }
+                    )
                 }
-
-                //Picker
-                Row(modifier= Modifier
-                    .weight(1f)
-                    .padding(4.dp),
-                    horizontalArrangement = Arrangement.SpaceAround)
+            ) {
+                innerPadding -> Column(
+                    modifier = Modifier
+                        .background(Color.Cyan)
+                        .padding(innerPadding)
+                        .padding(32.dp),
+                    verticalArrangement = Arrangement.SpaceEvenly,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                )
                 {
-                    Column(modifier= Modifier.weight(1f),
-                        verticalArrangement=Arrangement.SpaceAround,
-                        horizontalAlignment = Alignment.CenterHorizontally) {
-                        FilledIconButton(modifier= Modifier
-                            .weight(1f)
-                            .padding(8.dp)
-                            .fillMaxWidth(),
-                            onClick={
-                                viewModel.setCat(uiState.str,"Strength")
-                                navController.navigate("exercise_list")
-                            })
-                        {
-                            Text("Strength")
-                        }
-                        FilledIconButton(modifier= Modifier
-                            .weight(1f)
-                            .padding(8.dp)
-                            .fillMaxWidth(),
-                            onClick={
-                                viewModel.setCat(uiState.cardio,"Cardio")
-                                navController.navigate("exercise_list")
-                            })
-                        {
-                            Text("Cardio", modifier= Modifier.weight(1f))
-                        }
-                    }
-                    Column(modifier= Modifier.weight(1f),
-                        verticalArrangement=Arrangement.SpaceAround,
-                        horizontalAlignment = Alignment.CenterHorizontally) {
-                        FilledIconButton(modifier= Modifier
-                            .weight(1f)
-                            .padding(8.dp)
-                            .fillMaxWidth(),
-                            onClick={
-                                viewModel.setCat(uiState.flex,"Flexibility")
-                                navController.navigate("exercise_list")
-                            })
-                        {
-                            Text("Flexibility", modifier= Modifier.weight(1f))
-                        }
-                        FilledIconButton(modifier= Modifier
-                            .weight(1f)
-                            .padding(8.dp)
-                            .fillMaxWidth(),
-                            onClick={
-                                viewModel.setCat(uiState.hiit,"HIIT")
-                                navController.navigate("exercise_list")
-                            })
-                        {
-                            Text("HIIT", modifier= Modifier.weight(1f))
-                        }
-                    }
-                }
-
-                //History log
-
-                Card(modifier = Modifier.weight(1f)) {
+                    //Counters
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceAround
-                    ) {
-                        Text("Exercise Name:")
-                        Text("Time (mins):")
-                    }
-                    if(uiState.wList.isEmpty()){
-                        Text("No workouts logged yet. Select a category above to get started!",
-                            textAlign = TextAlign.Center)
-                    }
-                    else{
-                        LazyColumn(state=listState,
-                            verticalArrangement = Arrangement.spacedBy(12.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        )
-                        {
-                            items(uiState.wList,
-                                key = { it.id }
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(4.dp),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically
+                    )
+                    {
+                        Card(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(4.dp)
+                        ) {
+                            Column(
+                                verticalArrangement = Arrangement.SpaceBetween,
+                                horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                Card(colors= CardDefaults.cardColors(
-                                    containerColor = Color.LightGray,
+                                Text(
+                                    "Total Workouts\nCompleted:", textAlign = TextAlign.Center,
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(20.dp)
                                 )
+                                Text(
+                                    uiState.wList.size.toString(),
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(16.dp)
+                                )
+                            }
+                        }
+
+                        Card(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(4.dp)
+                        ) {
+                            Column(
+                                verticalArrangement = Arrangement.SpaceEvenly,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    "Total Cumulative\nWorkout Time:", textAlign = TextAlign.Center,
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(16.dp)
+                                )
+                                Text(
+                                    uiState.sum.toString(),
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(16.dp)
+                                )
+                            }
+                        }
+                    }
+
+                    //Picker
+                    Row(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(4.dp),
+                        horizontalArrangement = Arrangement.SpaceAround
+                    )
+                    {
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            verticalArrangement = Arrangement.SpaceAround,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            FilledIconButton(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(8.dp)
+                                    .fillMaxWidth(),
+                                onClick = {
+                                    viewModel.setCat(uiState.str, "Strength")
+                                    navController.navigate("exercise_list")
+                                })
+                            {
+                                Text("Strength")
+                            }
+                            FilledIconButton(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(8.dp)
+                                    .fillMaxWidth(),
+                                onClick = {
+                                    viewModel.setCat(uiState.cardio, "Cardio")
+                                    navController.navigate("exercise_list")
+                                })
+                            {
+                                Text("Cardio", modifier = Modifier.weight(1f))
+                            }
+                        }
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            verticalArrangement = Arrangement.SpaceAround,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            FilledIconButton(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(8.dp)
+                                    .fillMaxWidth(),
+                                onClick = {
+                                    viewModel.setCat(uiState.flex, "Flexibility")
+                                    navController.navigate("exercise_list")
+                                })
+                            {
+                                Text("Flexibility", modifier = Modifier.weight(1f))
+                            }
+                            FilledIconButton(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(8.dp)
+                                    .fillMaxWidth(),
+                                onClick = {
+                                    viewModel.setCat(uiState.hiit, "HIIT")
+                                    navController.navigate("exercise_list")
+                                })
+                            {
+                                Text("HIIT", modifier = Modifier.weight(1f))
+                            }
+                        }
+                    }
+
+                    //History log
+
+                    Card(modifier = Modifier.weight(1f)) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceAround
+                        ) {
+                            Text("Exercise Name:")
+                            Text("Time (mins):")
+                        }
+                        if (uiState.wList.isEmpty()) {
+                            Text(
+                                "No workouts logged yet. Select a category above to get started!",
+                                textAlign = TextAlign.Center
+                            )
+                        } else {
+                            LazyColumn(
+                                state = listState,
+                                verticalArrangement = Arrangement.spacedBy(12.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            )
+                            {
+                                items(
+                                    uiState.wList,
+                                    key = { it.id }
                                 ) {
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.SpaceAround
+                                    Card(
+                                        colors = CardDefaults.cardColors(
+                                            containerColor = Color.LightGray,
+                                        )
                                     ) {
-                                        Text(it.name)
-                                        Text(it.mins.toString())
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.SpaceAround
+                                        ) {
+                                            Text(it.name)
+                                            Text(it.mins.toString())
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-                }
 
-                //Clear log
-                FilledIconButton(modifier= Modifier
-                    .weight(1f)
-                    .padding(8.dp)
-                    .fillMaxWidth(),
-                    onClick={
-                        viewModel.reset()
-                    })
-                {
-                    Text("Clear Workout History", modifier= Modifier.weight(1f))
+                    //Clear log
+                    FilledIconButton(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(8.dp)
+                            .fillMaxWidth(),
+                        onClick = {
+                            viewModel.reset()
+                        })
+                    {
+                        Text("Clear Workout History", modifier = Modifier.weight(1f))
+                    }
                 }
             }
 
@@ -536,7 +585,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                     )
                 }
             ) {
-                innerPadding-> Column(
+                innerPadding -> Column(
                     modifier = Modifier
                         .background(Color.Cyan)
                         .padding(innerPadding)
