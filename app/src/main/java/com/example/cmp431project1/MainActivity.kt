@@ -48,6 +48,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -164,19 +167,24 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     verticalAlignment = Alignment.CenterVertically)
                 {
-                    Column(modifier= Modifier.weight(1f),
-                        verticalArrangement=Arrangement.SpaceBetween,
-                        horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("Total Workouts\nCompleted:", textAlign = TextAlign.Center
-                            , modifier= Modifier.weight(1f))
-                        Text(uiState.wList.size.toString(), modifier= Modifier.weight(1f))
+                    Card(modifier= Modifier.weight(1f).padding(4.dp)){
+                        Column(verticalArrangement=Arrangement.SpaceBetween,
+                            horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text("Total Workouts\nCompleted:", textAlign = TextAlign.Center,
+                                modifier= Modifier.weight(1f).padding(20.dp))
+                            Text(uiState.wList.size.toString(),
+                                modifier= Modifier.weight(1f).padding(16.dp))
+                        }
                     }
-                    Column(modifier= Modifier.weight(1f),
-                        verticalArrangement=Arrangement.SpaceEvenly,
-                        horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text("Total Cumulative\nWorkout Time:", textAlign = TextAlign.Center
-                            , modifier= Modifier.weight(1f))
-                        Text(uiState.sum.toString(), modifier= Modifier.weight(1f))
+
+                    Card(modifier= Modifier.weight(1f).padding(4.dp)){
+                            Column(verticalArrangement=Arrangement.SpaceEvenly,
+                            horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text("Total Cumulative\nWorkout Time:", textAlign = TextAlign.Center,
+                                modifier= Modifier.weight(1f).padding(16.dp))
+                            Text(uiState.sum.toString(),
+                                modifier= Modifier.weight(1f).padding(16.dp))
+                        }
                     }
                 }
 
@@ -227,16 +235,33 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                 }
 
                 //History log
-                //Text("space 3", textAlign = TextAlign.Center, modifier= Modifier.weight(1f))
-                LazyColumn(modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(32.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally)
-                {
-                    items(uiState.wList){
-                        Row(modifier= Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceAround){
-                            Text(it.name)
-                            Text(it.mins.toString())
+                Card(modifier = Modifier.weight(1f)) {
+                    LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    )
+                    {
+                        item{
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceAround
+                            ) {
+                                Text("Exercise Name:")
+                                Text("Time (mins):")
+                            }
+                        }
+                        items(uiState.wList) {
+                            Card(colors= CardDefaults.cardColors(
+                                    containerColor = Color.LightGray,
+                                )
+                            ) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceAround
+                                ) {
+                                    Text(it.name)
+                                    Text(it.mins.toString())
+                                }
+                            }
                         }
                     }
                 }
