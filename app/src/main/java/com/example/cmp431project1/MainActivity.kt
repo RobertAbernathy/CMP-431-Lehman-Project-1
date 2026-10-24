@@ -334,7 +334,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
         composable(route = "exercise_specific") {
             var text by rememberSaveable() { mutableStateOf("") }
             var errorText by rememberSaveable() { mutableStateOf("") }
-            Column(modifier= Modifier.background(Color.Cyan).padding(32.dp).fillMaxSize(),
+            Column(modifier= Modifier.background(Color.Cyan).padding(8.dp).fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally)
             {
@@ -345,14 +345,29 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                 {
                     Text("BACK")
                 }
-                Text(uiState.curExercise.name)
-                Text(uiState.curExercise.difficulty)
-                Text(uiState.curExercise.descrpt)
-                OutlinedTextField(
-                    value = text,
-                    onValueChange = { text = it },
-                    label = { Text("Enter guess") }
-                )
+                Card(modifier = Modifier.padding(2.dp).fillMaxWidth()){
+                    Text(uiState.curExercise.name, textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(2.dp).fillMaxWidth())
+                }
+                Card(modifier = Modifier.padding(2.dp).fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = uiState.curExercise.c
+                    )) {
+                    Text(uiState.curExercise.difficulty, textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(2.dp).fillMaxWidth())
+                }
+                Card(modifier = Modifier.padding(2.dp).fillMaxWidth()) {
+                    Text(uiState.curExercise.descrpt, textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(2.dp).fillMaxWidth())
+                }
+                Card(modifier = Modifier.padding(2.dp).fillMaxWidth()) {
+                    OutlinedTextField(
+                        modifier = Modifier.padding(2.dp).fillMaxWidth(),
+                        value = text,
+                        onValueChange = { text = it },
+                        label = { Text("Enter guess") }
+                    )
+                }
                 FilledIconButton(modifier= Modifier.padding(8.dp).fillMaxWidth(),
                     onClick={
                         if(text.toDoubleOrNull()!=null){
