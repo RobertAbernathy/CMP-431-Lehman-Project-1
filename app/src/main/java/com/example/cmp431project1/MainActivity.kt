@@ -52,6 +52,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,9 +69,6 @@ class MainActivity : ComponentActivity() {
 class Exercise(val name:String, val descrpt: String, val difficulty: String, val c: Color)
 class Workout(val name:String, val mins:Int)
 
-
-
-
 data class WorkUIState(
     var sum:Int=0,
     var wList: List<Workout> = emptyList<Workout>(),
@@ -77,6 +76,10 @@ data class WorkUIState(
         "dummy", Color.Black),
     val curCat: List<Exercise> = emptyList<Exercise>(),
     val catName: String ="dummy",
+    val inText:String="",
+    val errorText:String="Please Input Number",
+    val buttonOn:Boolean=false,
+    val errorColor:Color=Color.Black,
     val str: List<Exercise> =listOf<Exercise>(
         Exercise("1", "one",
             "Beginner", Color.Green),
@@ -117,7 +120,11 @@ class MainViewModel: ViewModel(){
         _uiState.update{
             currentState -> currentState.copy(
                 wList=currentState.wList+w,
-                sum=currentState.sum+w.mins
+                sum=currentState.sum+w.mins,
+                inText = "",
+                buttonOn = false,
+                errorText = "Accepted",
+                errorColor=Color.Green
             )
         }
     }
@@ -144,6 +151,61 @@ class MainViewModel: ViewModel(){
             currentState -> currentState.copy(
                 curExercise = e
             )
+        }
+    }
+
+    fun setText(inS:String){
+        if(inS.toDoubleOrNull()!=null){
+            if(inS.toDouble()<=0){
+                _uiState.update{
+                    currentState -> currentState.copy(
+                        inText = inS,
+                        errorText = "Number cannot be 0 or less",
+                        buttonOn = false,
+                        errorColor = Color.Red
+                    )
+                }
+            }
+            else if(inS.toIntOrNull()==null){
+                _uiState.update{
+                    currentState -> currentState.copy(
+                        inText = inS,
+                        errorText = "Number must be whole number\nwith No White Space",
+                        buttonOn = false,
+                        errorColor = Color.Red
+                    )
+                }
+            }
+            else {
+                _uiState.update{
+                    currentState -> currentState.copy(
+                        inText = inS,
+                        errorText = "",
+                        buttonOn = true,
+                        errorColor = Color.Green
+                    )
+                }
+            }
+        }
+        else if(inS==""){
+            _uiState.update{
+                currentState -> currentState.copy(
+                    inText = inS,
+                    errorText = "Please Input Number",
+                    buttonOn = false,
+                    errorColor = Color.Black
+                )
+            }
+        }
+        else{
+            _uiState.update{
+                currentState -> currentState.copy(
+                    inText = inS,
+                    errorText = "Please Valid Number\nwith No White Space",
+                    buttonOn = false,
+                    errorColor = Color.Red
+                )
+            }
         }
     }
 }
@@ -334,8 +396,6 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
 
         // Page 3
         composable(route = "exercise_specific") {
-            var text by rememberSaveable() { mutableStateOf("") }
-            var errorText by rememberSaveable() { mutableStateOf("") }
             Column(modifier= Modifier.background(Color.Cyan).padding(8.dp).fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally)
@@ -365,39 +425,23 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                 Card(modifier = Modifier.padding(2.dp).fillMaxWidth()) {
                     OutlinedTextField(
                         modifier = Modifier.padding(2.dp).fillMaxWidth(),
-                        value = text,
-                        onValueChange = { text = it },
-                        label = { Text("Enter guess") }
+                        value = uiState.inText,
+                        onValueChange = {  viewModel.setText(it) },
+                        label = { Text("Enter Minutes") }
                     )
                 }
                 FilledIconButton(modifier= Modifier.padding(8.dp).fillMaxWidth(),
+                    enabled = uiState.buttonOn,
+                    //colors = ButtonDefaults.buttonColors(uiState.buttonColor),
                     onClick={
-                        if(text.toDoubleOrNull()!=null){
-                            if(text.toDouble()<=0){
-                                errorText="Number cannot be 0 or less"
-                            }
-                            else if(text.toIntOrNull()==null){
-                                errorText="Number must be whole number\nwith No White Space"
-                            }
-                            else {
-                                viewModel.add(Workout(uiState.curExercise.name,
-                                    text.toInt()))
-                                errorText=""
-                                text = ""
-                            }
-                        }
-                        else if(text==""){
-                            errorText="Please Input Number"
-                        }
-                        else{
-                            errorText="Please Valid Number\nwith No White Space"
-                        }
+                        viewModel.add(Workout(uiState.curExercise.name,
+                            uiState.inText.toInt()))
                     }
                 )
                 {
                     Text("Log Completed Workout")
                 }
-                Text(errorText, color=Color.Red,  textAlign = TextAlign.Center)
+                Text(uiState.errorText, color=uiState.errorColor,  textAlign = TextAlign.Center)
             }
         }
     }
