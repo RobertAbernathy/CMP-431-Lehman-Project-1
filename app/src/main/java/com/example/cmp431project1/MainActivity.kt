@@ -85,6 +85,7 @@ data class WorkUIState(
     val buttonOn:Boolean=false,
     val errorColor:Color=Color.Black,
     val showAlert: Boolean=false,
+    val lastTime:Int=0,
     val str: List<Exercise> =listOf<Exercise>(
         Exercise("1", "one",
             "Beginner", Color.Green),
@@ -130,7 +131,8 @@ class MainViewModel: ViewModel(){
                 buttonOn = false,
                 errorText = "Accepted",
                 errorColor=Color.Green,
-                showAlert = true
+                showAlert = true,
+                lastTime = w.mins
             )
         }
     }
@@ -465,7 +467,8 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                                 viewModel.alertOff()
                             }
                         ) {
-                            Text("Accepted: "+uiState.curExercise.name+" for "+1+" minute(s)")
+                            Text("Accepted: "+uiState.curExercise.name+" for "+
+                                    uiState.lastTime+" minute(s)")
                         }
                     }
                 )
