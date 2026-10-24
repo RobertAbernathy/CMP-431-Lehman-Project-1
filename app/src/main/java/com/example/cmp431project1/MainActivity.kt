@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.FilledIconButton
@@ -58,6 +59,7 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.ui.draw.clip
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -467,14 +469,22 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                 BasicAlertDialog(
                     onDismissRequest = {},
                     content = {
-                        FilledIconButton(
-                            onClick={
-                                viewModel.alertOff()
+                        Column() {
+                            Card(modifier = Modifier.height(50.dp).fillMaxWidth()){
+                                Text("Accepted: "+uiState.curExercise.name+" for "+
+                                        uiState.lastTime+" minute(s)",
+                                    modifier = Modifier.padding(16.dp),
+                                    textAlign = TextAlign.Center)
                             }
-                        ) {
-                            Text("Accepted: "+uiState.curExercise.name+" for "+
-                                    uiState.lastTime+" minute(s)")
+                            FilledIconButton(modifier = Modifier.fillMaxWidth(),
+                                onClick={
+                                    viewModel.alertOff()
+                                }
+                            ) {
+                                Text("Dismiss")
+                            }
                         }
+
                     }
                 )
             }
