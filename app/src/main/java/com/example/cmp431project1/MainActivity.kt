@@ -1,5 +1,6 @@
 package com.example.cmp431project1
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -59,6 +60,7 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBar
 import androidx.compose.ui.draw.clip
 
 class MainActivity : ComponentActivity() {
@@ -228,6 +230,7 @@ class MainViewModel: ViewModel(){
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNavigation(viewModel: MainViewModel=viewModel()) {
@@ -404,63 +407,78 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
 
         // Page 2
         composable(route = "exercise_list") {
-            LazyColumn(modifier= Modifier
-                .background(Color.Cyan)
-                .padding(10.dp)
-                .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(32.dp),
-                horizontalAlignment = Alignment.CenterHorizontally)
-            {
-                item{
-                    Text(uiState.catName, textAlign = TextAlign.Center)
-                }
-                item{
-                    FilledIconButton(modifier= Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(),
-                        onClick={
-                            navController.popBackStack()
-                        })
-                    {
-                        Text("BACK")
-                    }
-                }
-                items(items=uiState.curCat,
-                    key={it.id}
-                ){
-                    Card() {
-                        Column() {
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = {
+                            Text(uiState.catName,
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Center
+                            )
+                        },
+                        navigationIcon={
                             FilledIconButton(
                                 modifier = Modifier
-                                    .padding(4.dp)
-                                    .fillMaxWidth(),
+                                    .padding(8.dp),
                                 onClick = {
-                                    viewModel.setEx(it)
-                                    navController.navigate("exercise_specific")
+                                    navController.popBackStack()
                                 })
                             {
-                                Text(it.name)
+                                Text("<-")
                             }
-                            Card(modifier = Modifier
-                                .padding(2.dp)
-                                .fillMaxWidth(),
-                                colors = CardDefaults.cardColors(
-                                    containerColor = it.c
-                                )
-                            ) {
+                        }
+                    )
+                }
+            ) {
+                innerPadding -> LazyColumn(
+                    modifier = Modifier
+                        .background(Color.Cyan)
+                        .padding(innerPadding)
+                        .padding(16.dp)
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(32.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                )
+                {
+                    items(
+                        items = uiState.curCat,
+                        key = { it.id }
+                    ) {
+                        Card() {
+                            Column() {
+                                FilledIconButton(
+                                    modifier = Modifier
+                                        .padding(4.dp)
+                                        .fillMaxWidth(),
+                                    onClick = {
+                                        viewModel.setEx(it)
+                                        navController.navigate("exercise_specific")
+                                    })
+                                {
+                                    Text(it.name)
+                                }
+                                Card(
+                                    modifier = Modifier
+                                        .padding(2.dp)
+                                        .fillMaxWidth(),
+                                    colors = CardDefaults.cardColors(
+                                        containerColor = it.c
+                                    )
+                                ) {
+                                    Text(
+                                        it.difficulty, textAlign = TextAlign.Center,
+                                        modifier = Modifier
+                                            .padding(2.dp)
+                                            .fillMaxWidth()
+                                    )
+                                }
                                 Text(
-                                    it.difficulty, textAlign = TextAlign.Center,
+                                    it.descrpt, textAlign = TextAlign.Center,
                                     modifier = Modifier
                                         .padding(2.dp)
                                         .fillMaxWidth()
                                 )
                             }
-                            Text(
-                                it.descrpt, textAlign = TextAlign.Center,
-                                modifier = Modifier
-                                    .padding(2.dp)
-                                    .fillMaxWidth()
-                            )
                         }
                     }
                 }
@@ -475,7 +493,9 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                     onDismissRequest = {},
                     content = {
                         Column() {
-                            Card(modifier = Modifier.height(50.dp).fillMaxWidth()){
+                            Card(modifier = Modifier
+                                .height(50.dp)
+                                .fillMaxWidth()){
                                 Text("Accepted: "+uiState.curExercise.name+" for "+
                                         uiState.lastTime+" minute(s)",
                                     modifier = Modifier.padding(16.dp),
@@ -493,95 +513,116 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                     }
                 )
             }
-            Column(modifier= Modifier
-                .background(Color.Cyan)
-                .padding(32.dp)
-                .fillMaxSize(),
-                verticalArrangement = Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.CenterHorizontally)
-            {
-                FilledIconButton(modifier= Modifier
-                    .weight(1f)
-                    .padding(8.dp)
-                    .fillMaxWidth(),
-                    onClick={
-                        navController.popBackStack()
-                    })
-                {
-                    Text("BACK")
-                }
-                Card(modifier = Modifier
-                    .weight(0.5f)
-                    .padding(2.dp)
-                    .fillMaxWidth()){
-                    Text(uiState.curExercise.name, textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(2.dp)
-                            .fillMaxWidth())
-                }
-                Card(modifier = Modifier
-                    .weight(0.3f)
-                    .padding(2.dp)
-                    .fillMaxWidth(),
-                    colors = CardDefaults.cardColors(
-                        containerColor = uiState.curExercise.c
-                    )) {
-                    Text(uiState.curExercise.difficulty, textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(2.dp)
-                            .fillMaxWidth())
-                }
-                Card(modifier = Modifier
-                    .weight(1f)
-                    .padding(2.dp)
-                    .fillMaxWidth()) {
-                    Text(uiState.curExercise.descrpt, textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(2.dp)
-                            .fillMaxWidth())
-                }
-                Card(modifier = Modifier
-                    .weight(0.7f)
-                    .padding(2.dp)
-                    .fillMaxWidth()) {
-                    OutlinedTextField(
-                        modifier = Modifier
-                            .padding(2.dp)
-                            .fillMaxWidth(),
-                        value = uiState.inText,
-                        onValueChange = {  viewModel.setText(it) },
-                        label = { Text("Enter Minutes") }
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = {
+                            Text(uiState.curExercise.name,
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Center
+                            )
+                        },
+                        navigationIcon={
+                            FilledIconButton(
+                                modifier = Modifier
+                                    .padding(8.dp),
+                                onClick = {
+                                    navController.popBackStack()
+                                })
+                            {
+                                Text("<-")
+                            }
+                        }
                     )
                 }
-                FilledIconButton(modifier= Modifier
-                    .weight(1f)
-                    .padding(8.dp)
-                    .fillMaxWidth(),
-                    enabled = uiState.buttonOn,
-                    //colors = ButtonDefaults.buttonColors(uiState.buttonColor),
-                    onClick={
-                        viewModel.add(
-                            Workout(
-                                uiState.curExercise.name,
-                                uiState.inText.toInt(),
-                                uiState.wList.size
-                            )
-                        )
-                    }
+            ) {
+                innerPadding-> Column(
+                    modifier = Modifier
+                        .background(Color.Cyan)
+                        .padding(innerPadding)
+                        .padding(32.dp)
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.SpaceEvenly,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 )
                 {
-                    Text("Log Completed Workout")
-                }
-                Card(modifier = Modifier
-                    .weight(1f)
-                    .padding(4.dp)
-                    .fillMaxWidth()) {
-                    Text(
-                        uiState.errorText,
-                        modifier = Modifier.padding(32.dp),
-                        color = uiState.errorColor,
-                        textAlign = TextAlign.Center
+                    Card(
+                        modifier = Modifier
+                            .weight(0.3f)
+                            .padding(2.dp)
+                            .fillMaxWidth(),
+                        colors = CardDefaults.cardColors(
+                            containerColor = uiState.curExercise.c
+                        )
+                    ) {
+                        Text(
+                            uiState.curExercise.difficulty, textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .padding(2.dp)
+                                .fillMaxWidth()
+                        )
+                    }
+                    Card(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(2.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Text(
+                            uiState.curExercise.descrpt, textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .padding(2.dp)
+                                .fillMaxWidth()
+                        )
+                    }
+                    Card(
+                        modifier = Modifier
+                            .weight(0.7f)
+                            .padding(2.dp)
+                            .fillMaxWidth()
+                    ) {
+                        OutlinedTextField(
+                            modifier = Modifier
+                                .padding(2.dp)
+                                .fillMaxWidth(),
+                            value = uiState.inText,
+                            onValueChange = { viewModel.setText(it) },
+                            label = { Text("Enter Minutes") }
+                        )
+                    }
+                    FilledIconButton(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(8.dp)
+                            .fillMaxWidth(),
+                        enabled = uiState.buttonOn,
+                        //colors = ButtonDefaults.buttonColors(uiState.buttonColor),
+                        onClick = {
+                            viewModel.add(
+                                Workout(
+                                    uiState.curExercise.name,
+                                    uiState.inText.toInt(),
+                                    uiState.wList.size
+                                )
+                            )
+                        }
                     )
+                    {
+                        Text("Log Completed Workout")
+                    }
+                    Card(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(4.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Text(
+                            uiState.errorText,
+                            modifier = Modifier.padding(32.dp),
+                            color = uiState.errorColor,
+                            textAlign = TextAlign.Center
+                        )
+                    }
                 }
             }
         }
