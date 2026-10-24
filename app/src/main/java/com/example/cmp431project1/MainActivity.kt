@@ -281,7 +281,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
 
         // Page 2
         composable(route = "exercise_list") {
-            LazyColumn(modifier= Modifier.background(Color.Cyan).padding(32.dp).fillMaxSize(),
+            LazyColumn(modifier= Modifier.background(Color.Cyan).padding(10.dp).fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(32.dp),
                 horizontalAlignment = Alignment.CenterHorizontally)
             {
@@ -298,16 +298,33 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                     }
                 }
                 items(items=uiState.curCat){
-                    FilledIconButton(modifier= Modifier.padding(8.dp).fillMaxWidth(),
-                        onClick={
-                            viewModel.setEx(it)
-                            navController.navigate("exercise_specific")
-                        })
-                    {
-                        Text(it.name)
+                    Card() {
+                        Column() {
+                            FilledIconButton(
+                                modifier = Modifier.padding(4.dp).fillMaxWidth(),
+                                onClick = {
+                                    viewModel.setEx(it)
+                                    navController.navigate("exercise_specific")
+                                })
+                            {
+                                Text(it.name)
+                            }
+                            Card(modifier = Modifier.padding(2.dp).fillMaxWidth(),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = it.c
+                                )
+                            ) {
+                                Text(
+                                    it.difficulty, textAlign = TextAlign.Center,
+                                    modifier = Modifier.padding(2.dp).fillMaxWidth()
+                                )
+                            }
+                            Text(
+                                it.descrpt, textAlign = TextAlign.Center,
+                                modifier = Modifier.padding(2.dp).fillMaxWidth()
+                            )
+                        }
                     }
-                    Text(it.difficulty)
-                    Text(it.descrpt)
                 }
             }
         }
