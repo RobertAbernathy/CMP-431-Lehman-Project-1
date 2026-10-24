@@ -317,9 +317,13 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                             if(text.toDouble()<=0){
                                 errorText="Number cannot be 0 or less"
                             }
+                            else if(text.toIntOrNull()==null){
+                                errorText="Number must be whole number\nwith No White Space"
+                            }
                             else {
                                 viewModel.add(Workout(uiState.curExercise.name,
                                     text.toInt()))
+                                errorText=""
                                 text = ""
                             }
                         }
@@ -327,15 +331,14 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                             errorText="Please Input Number"
                         }
                         else{
-                            errorText="Please Valid Number"
+                            errorText="Please Valid Number\nwith No White Space"
                         }
                     }
                 )
                 {
                     Text("Log Completed Workout")
                 }
-                Text(errorText, color=Color.Red)
-
+                Text(errorText, color=Color.Red,  textAlign = TextAlign.Center)
             }
         }
     }
