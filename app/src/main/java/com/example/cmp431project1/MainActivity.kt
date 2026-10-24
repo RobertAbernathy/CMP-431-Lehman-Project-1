@@ -72,14 +72,15 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-class Exercise(val name:String, val descrpt: String, val difficulty: String, val c: Color)
-class Workout(val name:String, val mins:Int)
+class Exercise(val name:String, val descrpt: String,
+               val difficulty: String, val c: Color, val id:Int)
+class Workout(val name:String, val mins:Int, val id:Int)
 
 data class WorkUIState(
     var sum:Int=0,
     var wList: List<Workout> = emptyList<Workout>(),
     val curExercise: Exercise = Exercise("dummy", "this shouldn't be seen",
-        "dummy", Color.Black),
+        "dummy", Color.Black, 0),
     val curCat: List<Exercise> = emptyList<Exercise>(),
     val catName: String ="dummy",
     val inText:String="",
@@ -90,35 +91,35 @@ data class WorkUIState(
     val lastTime:Int=0,
     val str: List<Exercise> =listOf<Exercise>(
         Exercise("1", "one",
-            "Beginner", Color.Green),
+            "Beginner", Color.Green, 0),
         Exercise("2", "two",
-            "Intermediate", Color.Yellow),
+            "Intermediate", Color.Yellow, 1),
         Exercise("3", "three",
-            "Advanced", Color.Red)
+            "Advanced", Color.Red, 2)
     ),
     val cardio: List<Exercise> =listOf<Exercise>(
         Exercise("1", "one",
-            "Beginner", Color.Green),
+            "Beginner", Color.Green, 0),
         Exercise("2", "two",
-            "Intermediate", Color.Yellow),
+            "Intermediate", Color.Yellow, 1),
         Exercise("3", "three",
-            "Advanced", Color.Red)
+            "Advanced", Color.Red, 2)
     ),
     val flex: List<Exercise> =listOf<Exercise>(
         Exercise("1", "one",
-            "Beginner", Color.Green),
+            "Beginner", Color.Green, 0),
         Exercise("2", "two",
-            "Intermediate", Color.Yellow),
+            "Intermediate", Color.Yellow, 1),
         Exercise("3", "three",
-            "Advanced", Color.Red)
+            "Advanced", Color.Red, 2)
     ),
     val hiit: List<Exercise> =listOf<Exercise>(
         Exercise("1", "one",
-            "Beginner", Color.Green),
+            "Beginner", Color.Green, 0),
         Exercise("2", "two",
-            "Intermediate", Color.Yellow),
+            "Intermediate", Color.Yellow, 1),
         Exercise("3", "three",
-            "Advanced", Color.Red)
+            "Advanced", Color.Red, 2)
     )
 )
 class MainViewModel: ViewModel(){
@@ -365,7 +366,9 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                             horizontalAlignment = Alignment.CenterHorizontally
                         )
                         {
-                            items(uiState.wList) {
+                            items(uiState.wList,
+                                key = { it.id }
+                            ) {
                                 Card(colors= CardDefaults.cardColors(
                                     containerColor = Color.LightGray,
                                 )
@@ -422,7 +425,9 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                         Text("BACK")
                     }
                 }
-                items(items=uiState.curCat){
+                items(items=uiState.curCat,
+                    key={it.id}
+                ){
                     Card() {
                         Column() {
                             FilledIconButton(
@@ -555,8 +560,13 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                     enabled = uiState.buttonOn,
                     //colors = ButtonDefaults.buttonColors(uiState.buttonColor),
                     onClick={
-                        viewModel.add(Workout(uiState.curExercise.name,
-                            uiState.inText.toInt()))
+                        viewModel.add(
+                            Workout(
+                                uiState.curExercise.name,
+                                uiState.inText.toInt(),
+                                uiState.wList.size
+                            )
+                        )
                     }
                 )
                 {
