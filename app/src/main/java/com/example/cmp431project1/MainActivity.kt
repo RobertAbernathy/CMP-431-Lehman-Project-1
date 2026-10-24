@@ -51,6 +51,7 @@ import kotlinx.coroutines.flow.update
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.lazy.rememberLazyListState
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -157,8 +158,8 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
         startDestination = "home" // The initial screen route
     ) {
         composable(route = "home") {
-
-            Column(modifier= Modifier.background(Color.Cyan).padding(32.dp).fillMaxSize(),
+            val listState = rememberLazyListState()
+            Column(modifier= Modifier.background(Color.Cyan).padding(32.dp),
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally)
             {
@@ -235,8 +236,10 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                 }
 
                 //History log
+
                 Card(modifier = Modifier.weight(1f)) {
-                    LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp),
+                    LazyColumn(state=listState,
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     )
                     {
