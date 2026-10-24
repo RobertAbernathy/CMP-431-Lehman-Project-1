@@ -64,26 +64,51 @@ class Exercise(val name:String, val descrpt: String, val difficulty: String, val
 class Workout(val name:String, val mins:Int)
 
 
-val str=listOf<Exercise>(
-    Exercise("1", "one",
-        "Beginner", Color.Green),
-    Exercise("2", "two",
-        "Intermediate", Color.Yellow),
-    Exercise("3", "three",
-        "Advanced", Color.Red)
-)
 
-data class WorkUIstate(
+
+data class WorkUIState(
     var sum:Int=0,
     var wList: List<Workout> = emptyList<Workout>(),
     val curExercise: Exercise = Exercise("dummy", "this shouldn't be seen",
         "dummy", Color.Black),
     val curCat: List<Exercise> = emptyList<Exercise>(),
-    val catName: String ="dummy"
+    val catName: String ="dummy",
+    val str: List<Exercise> =listOf<Exercise>(
+        Exercise("1", "one",
+            "Beginner", Color.Green),
+        Exercise("2", "two",
+            "Intermediate", Color.Yellow),
+        Exercise("3", "three",
+            "Advanced", Color.Red)
+    ),
+    val cardio: List<Exercise> =listOf<Exercise>(
+        Exercise("1", "one",
+            "Beginner", Color.Green),
+        Exercise("2", "two",
+            "Intermediate", Color.Yellow),
+        Exercise("3", "three",
+            "Advanced", Color.Red)
+    ),
+    val flex: List<Exercise> =listOf<Exercise>(
+        Exercise("1", "one",
+            "Beginner", Color.Green),
+        Exercise("2", "two",
+            "Intermediate", Color.Yellow),
+        Exercise("3", "three",
+            "Advanced", Color.Red)
+    ),
+    val hiit: List<Exercise> =listOf<Exercise>(
+        Exercise("1", "one",
+            "Beginner", Color.Green),
+        Exercise("2", "two",
+            "Intermediate", Color.Yellow),
+        Exercise("3", "three",
+            "Advanced", Color.Red)
+    )
 )
 class MainViewModel: ViewModel(){
-    private val _uiState= MutableStateFlow(WorkUIstate())
-    val uiState: StateFlow<WorkUIstate> = _uiState.asStateFlow()
+    private val _uiState= MutableStateFlow(WorkUIState())
+    val uiState: StateFlow<WorkUIState> = _uiState.asStateFlow()
     fun add(w: Workout){
         _uiState.update{
             currentState -> currentState.copy(
@@ -144,14 +169,14 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                         horizontalAlignment = Alignment.CenterHorizontally) {
                         Text("Total Workouts\nCompleted:", textAlign = TextAlign.Center
                             , modifier= Modifier.weight(1f))
-                        Text(uiState.sum.toString(), modifier= Modifier.weight(1f))
+                        Text(uiState.wList.size.toString(), modifier= Modifier.weight(1f))
                     }
                     Column(modifier= Modifier.weight(1f),
                         verticalArrangement=Arrangement.SpaceEvenly,
                         horizontalAlignment = Alignment.CenterHorizontally) {
                         Text("Total Cumulative\nWorkout Time:", textAlign = TextAlign.Center
                             , modifier= Modifier.weight(1f))
-                        Text("TODO", modifier= Modifier.weight(1f))
+                        Text(uiState.sum.toString(), modifier= Modifier.weight(1f))
                     }
                 }
 
@@ -164,7 +189,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                         horizontalAlignment = Alignment.CenterHorizontally) {
                         FilledIconButton(modifier= Modifier.weight(1f).padding(8.dp).fillMaxWidth(),
                             onClick={
-                                viewModel.setCat(str,"Strength")
+                                viewModel.setCat(uiState.str,"Strength")
                                 navController.navigate("exercise_list")
                             })
                         {
@@ -172,6 +197,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                         }
                         FilledIconButton(modifier= Modifier.weight(1f).padding(8.dp).fillMaxWidth(),
                             onClick={
+                                viewModel.setCat(uiState.cardio,"Cardio")
                                 navController.navigate("exercise_list")
                             })
                         {
@@ -183,6 +209,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                         horizontalAlignment = Alignment.CenterHorizontally) {
                         FilledIconButton(modifier= Modifier.weight(1f).padding(8.dp).fillMaxWidth(),
                             onClick={
+                                viewModel.setCat(uiState.flex,"Flexibility")
                                 navController.navigate("exercise_list")
                             })
                         {
@@ -190,6 +217,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                         }
                         FilledIconButton(modifier= Modifier.weight(1f).padding(8.dp).fillMaxWidth(),
                             onClick={
+                                viewModel.setCat(uiState.hiit,"HIIT")
                                 navController.navigate("exercise_list")
                             })
                         {
@@ -263,6 +291,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
         // Page 3
         composable(route = "exercise_specific") {
             var text by rememberSaveable() { mutableStateOf("") }
+            var errorText by rememberSaveable() { mutableStateOf("") }
             Column(modifier= Modifier.background(Color.Cyan).padding(32.dp).fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally)
@@ -284,12 +313,28 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                 )
                 FilledIconButton(modifier= Modifier.padding(8.dp).fillMaxWidth(),
                     onClick={
-                        viewModel.add(Workout(uiState.curExercise.name, text.toInt()))
-                        text=""
-                    })
+                        if(text.toDoubleOrNull()!=null){
+                            if(text.toDouble()<=0){
+                                errorText="Number cannot be 0 or less"
+                            }
+                            else {
+                                viewModel.add(Workout(uiState.curExercise.name,
+                                    text.toInt()))
+                                text = ""
+                            }
+                        }
+                        else if(text==""){
+                            errorText="Please Input Number"
+                        }
+                        else{
+                            errorText="Please Valid Number"
+                        }
+                    }
+                )
                 {
-                    Text("Do Exercise for selected time")
+                    Text("Log Completed Workout")
                 }
+                Text(errorText, color=Color.Red)
 
             }
         }
