@@ -31,6 +31,8 @@ import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
@@ -38,7 +40,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavBackStackEntry
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,11 +86,35 @@ val str=listOf<exercise>(
     exercise("3", "three",
         "Advanced", Color.Red)
 )
-var wHold= workoutHold()
 
+data class workUIstate(
+    var sum:Int=0,
+    var L: List<workout> = emptyList<workout>()
+)
+class mainViewModel: ViewModel(){
+    private val _uiState= MutableStateFlow(workUIstate())
+    val uiState: StateFlow<workUIstate> = _uiState.asStateFlow()
+    fun add(w: workout){
+        _uiState.update{
+            currentState -> currentState.copy(
+                L=currentState.L+w,
+                sum=currentState.sum+w.mins
+            )
+        }
+    }
+    fun reset(){
+        _uiState.update{
+            currentState -> currentState.copy(
+                L=emptyList<workout>(),
+                sum=0
+            )
+        }
+    }
+}
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(viewModel: mainViewModel=viewModel()) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val navController = rememberNavController()
 
     NavHost(
@@ -104,7 +137,7 @@ fun AppNavigation() {
                         horizontalAlignment = Alignment.CenterHorizontally) {
                         Text("Total Workouts\nCompleted:", textAlign = TextAlign.Center
                             , modifier= Modifier.weight(1f))
-                        Text(wHold.sum.toString(), modifier= Modifier.weight(1f))
+                        Text(uiState.sum.toString(), modifier= Modifier.weight(1f))
                     }
                     Column(modifier= Modifier.weight(1f),
                         verticalArrangement=Arrangement.SpaceEvenly,
@@ -165,7 +198,7 @@ fun AppNavigation() {
                     verticalArrangement = Arrangement.spacedBy(32.dp),
                     horizontalAlignment = Alignment.CenterHorizontally)
                 {
-                    items(wHold.L){
+                    items(uiState.L){
                         Row(modifier= Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceAround){
                             Text(it.name)
@@ -177,7 +210,7 @@ fun AppNavigation() {
                 //Clear log
                 FilledIconButton(modifier= Modifier.weight(1f).padding(8.dp).fillMaxWidth(),
                     onClick={
-                        wHold.reset()
+                        viewModel.reset()
                     })
                 {
                     Text("Clear Workout History", modifier= Modifier.weight(1f))
@@ -245,7 +278,7 @@ fun AppNavigation() {
                 )
                 FilledIconButton(modifier= Modifier.padding(8.dp).fillMaxWidth(),
                     onClick={
-                        wHold.add(workout(curExercise.name, text.toInt()))
+                        viewModel.add(workout(curExercise.name, text.toInt()))
                         text=""
                     })
                 {
