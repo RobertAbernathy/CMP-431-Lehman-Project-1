@@ -41,6 +41,8 @@ import kotlinx.coroutines.flow.update
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBar
@@ -305,15 +307,15 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                     modifier = Modifier
                         .background(Color.Cyan)
                         .padding(innerPadding)
-                        .padding(32.dp),
-                    verticalArrangement = Arrangement.SpaceEvenly,
+                        .padding(32.dp)
+                        .verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(32.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 )
                 {
                     //Counters
                     Row(
-                        modifier = Modifier
-                            .weight(1f)
+                        modifier = Modifier.height(200.dp)
                             .padding(4.dp),
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically
@@ -321,7 +323,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                     {
                         Card(
                             modifier = Modifier
-                                .weight(1f)
+                                //.weight(1f)
                                 .padding(4.dp)
                         ) {
                             Column(
@@ -345,7 +347,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
 
                         Card(
                             modifier = Modifier
-                                .weight(1f)
+                                //.weight(1f)
                                 .padding(4.dp)
                         ) {
                             Column(
@@ -370,8 +372,8 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
 
                     //Picker
                     Row(
-                        modifier = Modifier
-                            .weight(1f)
+                        modifier = Modifier.height(200.dp)
+                            //.weight(1f)
                             .padding(4.dp),
                         horizontalArrangement = Arrangement.SpaceAround
                     )
@@ -448,7 +450,9 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
 
                     //History log
 
-                    Card(modifier = Modifier.weight(1f)) {
+                    Card(
+                        //modifier = Modifier.weight(1f)
+                        ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceAround
@@ -493,7 +497,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                     //Clear log
                     FilledIconButton(
                         modifier = Modifier
-                            .weight(1f)
+                            //.weight(1f)
                             .padding(8.dp)
                             .fillMaxWidth(),
                         onClick = {
@@ -650,14 +654,15 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                         .background(Color.Cyan)
                         .padding(innerPadding)
                         .padding(32.dp)
-                        .fillMaxSize(),
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState()),
                     verticalArrangement = Arrangement.SpaceEvenly,
                     horizontalAlignment = Alignment.CenterHorizontally
                 )
                 {
                     Card(
                         modifier = Modifier
-                            .weight(0.3f)
+                            .height(50.dp)
                             .padding(2.dp)
                             .fillMaxWidth(),
                         colors = CardDefaults.cardColors(
@@ -673,7 +678,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                     }
                     Card(
                         modifier = Modifier
-                            .weight(1.3f)
+                            .height(300.dp)
                             .padding(2.dp)
                             .fillMaxWidth()
                     ) {
@@ -686,7 +691,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                     }
                     Card(
                             modifier = Modifier
-                                .weight(0.3f)
+                                .height(50.dp)
                                 .padding(2.dp)
                                 .fillMaxWidth()
                             ) {
@@ -701,7 +706,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                     }
                     Card(
                         modifier = Modifier
-                            .weight(0.3f)
+                            .height(100.dp)
                             .padding(2.dp)
                             .fillMaxWidth()
                     ) {
@@ -716,7 +721,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                     }
                     FilledIconButton(
                         modifier = Modifier
-                            .weight(0.4f)
+                            .height(50.dp)
                             .padding(8.dp)
                             .fillMaxWidth(),
                         enabled = uiState.buttonOn,
@@ -736,7 +741,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                     }
                     Card(
                         modifier = Modifier
-                            .weight(0.6f)
+                            .height(150.dp)
                             .padding(4.dp)
                             .fillMaxWidth()
                     ) {
@@ -756,6 +761,6 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
 @Composable
 fun GreetingPreview() {
     CMP431Project1Theme {
-
+        AppNavigation()
     }
 }
