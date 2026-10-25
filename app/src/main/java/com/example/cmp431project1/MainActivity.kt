@@ -95,7 +95,7 @@ data class WorkUIState(
                     "2. Step back with your left foot backward and crossing your right leg\n" +
                     "3. Bend both knees until your left knee touches the ground\n" +
                     "4. Return to the starting position by pushing off with your left foot\n" +
-                    "5. Repeat same foot until you are ready to switch to the other", 2,
+                    "5. Repeat with the same foot until you are ready to switch to the other", 2,
             "Intermediate", Color.Yellow, 2)
     ),
 
@@ -109,8 +109,8 @@ data class WorkUIState(
         Exercise("Bear Crawl", "Knees slightly above the ground",
             "1. Get on all fours with you arms stretched down and knees below you\n" +
                     "2. Lift your knees slightly above the ground, but still under you\n" +
-                    "3. Move left foot/right hand forward\n" +
-                    "4. Move right foot/left hand forward\n" +
+                    "3. Move left foot and right hand forward\n" +
+                    "4. Move right foot and left hand forward\n" +
                     "5. Keep your back straight as you can", 1,
             "Intermediate", Color.Yellow, 1),
 
@@ -119,7 +119,7 @@ data class WorkUIState(
                     "2. Jump upward\n3. When you land squat down with your hands on the ground\n" +
                     "4. Move your legs back as far as you can quickly\n" +
                     "5. Move them back under yourself\n" +
-                    "6. Go back to standing and repeat", 1,
+                    "6. Go back to standing position with hands at side and repeat", 1,
             "Advanced", Color.Red, 2)
     ),
 
@@ -155,19 +155,19 @@ data class WorkUIState(
         Exercise("Jumping Jacks", "A jumping based exercise",
             "1. Start with feet together standing with hands at sides\n" +
                     "2. Jump and moves feet apart sideways while clapping hands above your head\n" +
-                    "3. Jump again but now move feet together and hands back to waist\n" +
+                    "3. Jump again but now move feet together and hands back to your waist\n" +
                     "4. Repeat steps 2 and 3", 1,
             "Beginner", Color.Green, 0),
 
         Exercise("Toe Touch Crunch", "Lie on your back and stretch",
-            "1. Lie on you back\n2. Lift your legs up\n" +
+            "1. Lie on your back\n2. Lift your legs up\n" +
                     "3. Reach your arms towards your toes as best you can", 5,
             "Intermediate", Color.Yellow, 1),
 
         Exercise("Inchworm", "Get on all fours",
             "1. Get on all fours\n" +
                     "2. Move your hands as if walking as far forward as you can go\n" +
-                    "3. Move your feet as when walking, keeping you hands on the ground," +
+                    "3. Move your feet forward as when walking, keeping you hands on the ground," +
                     "until you reach as close as you can to your hands", 1,
             "Intermediate", Color.Yellow, 2)
     )
