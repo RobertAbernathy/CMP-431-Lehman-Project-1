@@ -323,7 +323,6 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                     {
                         Card(
                             modifier = Modifier
-                                //.weight(1f)
                                 .padding(4.dp)
                         ) {
                             Column(
@@ -347,7 +346,6 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
 
                         Card(
                             modifier = Modifier
-                                //.weight(1f)
                                 .padding(4.dp)
                         ) {
                             Column(
@@ -373,7 +371,6 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                     //Picker
                     Row(
                         modifier = Modifier.height(200.dp)
-                            //.weight(1f)
                             .padding(4.dp),
                         horizontalArrangement = Arrangement.SpaceAround
                     )
@@ -450,9 +447,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
 
                     //History log
 
-                    Card(
-                        //modifier = Modifier.weight(1f)
-                        ) {
+                    Card {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceAround
@@ -498,7 +493,6 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                     //Clear log
                     FilledIconButton(
                         modifier = Modifier
-                            //.weight(1f)
                             .padding(8.dp)
                             .fillMaxWidth(),
                         onClick = {
