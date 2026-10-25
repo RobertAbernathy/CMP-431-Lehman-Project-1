@@ -468,6 +468,7 @@ fun AppNavigation(viewModel: MainViewModel=viewModel()) {
                         } else {
                             LazyColumn(
                                 state = listState,
+                                modifier = Modifier.height(300.dp),
                                 verticalArrangement = Arrangement.spacedBy(12.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             )
